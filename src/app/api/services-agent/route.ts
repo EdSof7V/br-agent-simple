@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     const { question } = await request.json();
     
-    const url = 'https://rryvg55fyi.execute-api.us-east-1.amazonaws.com/default/Agente-Experto-Confluence';
+    const url = 'https://451mknt4hg.execute-api.us-east-1.amazonaws.com/default/query-rag';
 
     const response = await fetch(url, {
       method: 'POST',
