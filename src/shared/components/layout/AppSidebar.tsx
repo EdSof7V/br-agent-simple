@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSidebar } from "@/context/SidebarContext";
 
 const allNavItems = [
-   /*  {
+    {
         icon:
             (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -16,7 +16,7 @@ const allNavItems = [
         name: "Agente IA",
         path: "/data-domain",
         section: "MENU"
-    }, */
+    },
     {
         icon:
             (
