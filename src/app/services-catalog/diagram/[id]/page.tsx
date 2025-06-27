@@ -3,11 +3,12 @@ import React from "react";
 import ServicesDiagramDetailsPage from "@/features/services-catalog/components/ServicesDiagramDetailsPage";
 
 interface ServicesCatalogDiagramProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function ServicesCatalogDiagram({ params }: ServicesCatalogDiagramProps) {
-  return <ServicesDiagramDetailsPage diagramId={params.id} />;
+export default async function ServicesCatalogDiagram({ params }: ServicesCatalogDiagramProps) {
+  const { id } = await params;
+  return <ServicesDiagramDetailsPage diagramId={id} />;
 } 
