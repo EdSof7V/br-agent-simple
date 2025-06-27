@@ -29,15 +29,17 @@ export const AIAgentChat = () => {
     scrollToBottom();
   }, [messages]);
 
-  const callAIAgent = async (question: string): Promise<string> => {
+  // Endpoint principal
+  const callPrimaryAgent = async (question: string): Promise<string> => {
     try {
-      const response = await fetch('https://451mknt4hg.execute-api.us-east-1.amazonaws.com/default/Agente-de-Consultas', {
+      const response = await fetch('/api/ai-agent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          question: question
+          question: question,
+          endpoint: 'primary'
         })
       });
 
@@ -50,30 +52,99 @@ export const AIAgentChat = () => {
       if (data && data.answer) {
         return data.answer;
       } else {
-        return 'No se recibió una respuesta válida del agente.';
+        return 'No se recibió una respuesta válida del agente principal.';
       }
     } catch (error) {
-      console.error('Error calling AI agent:', error);
-      return 'Error al comunicarse con el agente. Por favor, intenta de nuevo.';
+      console.error('Error calling primary AI agent:', error);
+      return 'Error al comunicarse con el agente principal.';
+    }
+  };
+
+  // Endpoint secundario (fallback)
+  const callSecondaryAgent = async (question: string): Promise<string> => {
+    try {
+      const response = await fetch('/api/ai-agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          question: question,
+          endpoint: 'secondary'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data && data.answer) {
+        return data.answer;
+      } else {
+        return 'No se recibió una respuesta válida del agente secundario.';
+      }
+    } catch (error) {
+      console.error('Error calling secondary AI agent:', error);
+      return 'Error al comunicarse con el agente secundario. Por favor, intenta de nuevo.';
+    }
+  };
+
+  const callAIAgent = async (question: string): Promise<string> => {
+    try {
+      // Primero intentamos con el agente principal
+      const primaryResponse = await callPrimaryAgent(question);
+      
+      // Verificamos si la respuesta contiene "NO_SÉ:"
+      if (primaryResponse.includes('NO_SÉ:')) {
+        // Si contiene NO_SÉ, consultamos al agente secundario
+        const secondaryResponse = await callSecondaryAgent(question);
+        return `**<span style="color: #10B981; font-weight: bold;">BOM DE BIAN 12</span>**\n\n${secondaryResponse}`;
+      } else {
+        // Si no contiene NO_SÉ, devolvemos la respuesta del agente principal
+        return `**<span style="color: #8B5CF6; font-weight: bold;">ENTIDADES - CONFLUENCE RIPLEY</span>**\n\n${primaryResponse}`;
+      }
+    } catch (error) {
+      console.error('Error in AI agent fallback system:', error);
+      return 'Error en el sistema de agentes. Por favor, intenta de nuevo.';
     }
   };
 
   // Test function to check endpoint accessibility
   const testEndpoint = async () => {
     try {
-      const response = await fetch('https://451mknt4hg.execute-api.us-east-1.amazonaws.com/default/Agente-de-Consultas', {
+      // Test primary endpoint
+      const primaryResponse = await fetch('/api/ai-agent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          question: "test"
+          question: "test",
+          endpoint: 'primary'
         })
       });
       
-      console.log('Test response status:', response.status);
-      const data = await response.json();
-      console.log('Test response data:', data);
+      console.log('Primary test response status:', primaryResponse.status);
+      const primaryData = await primaryResponse.json();
+      console.log('Primary test response data:', primaryData);
+
+      // Test secondary endpoint
+      const secondaryResponse = await fetch('/api/ai-agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          question: "test",
+          endpoint: 'secondary'
+        })
+      });
+      
+      console.log('Secondary test response status:', secondaryResponse.status);
+      const secondaryData = await secondaryResponse.json();
+      console.log('Secondary test response data:', secondaryData);
     } catch (error) {
       console.error('Test failed:', error);
     }

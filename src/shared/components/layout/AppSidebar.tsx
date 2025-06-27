@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSidebar } from "@/context/SidebarContext";
 
 const allNavItems = [
-    {
+   /*  {
         icon:
             (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -15,6 +15,17 @@ const allNavItems = [
             ),
         name: "Agente IA",
         path: "/data-domain",
+        section: "MENU"
+    }, */
+    {
+        icon:
+            (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M21 7.5l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313M21 3v6m0 0l-2.25-1.313M21 16.5v-6m0 0l-2.25 1.313M3 16.5v-6m0 0l2.25 1.313M3 3v6m0 0l2.25-1.313M12 12.75L9.75 11.437M12 12.75l2.25-1.313M12 12.75v2.25m0 0l2.25 1.313M12 18.75l-2.25-1.313M12 18.75v-2.25m0 0l-2.25 1.313M12 12.75L9.75 14.063M12 12.75l2.25 1.313M12 12.75v-2.25m0 0l-2.25-1.313M12 5.25l2.25 1.313M12 5.25v2.25m0 0l2.25-1.313M12 5.25L9.75 6.563M12 5.25l-2.25-1.313M12 5.25V3m0 0l-2.25 1.313M12 3v2.25m0 0l2.25-1.313M12 5.25L9.75 4.5" />
+                </svg>
+            ),
+        name: "Catálogo de Servicios",
+        path: "/services-catalog",
         section: "MENU"
     }
 ];
